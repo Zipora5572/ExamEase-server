@@ -17,8 +17,6 @@ DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// קונפיגורציה עבור GoogleServiceAccount
-//builder.Services.Configure<GoogleServiceAccount>(builder.Configuration.GetSection("GoogleServiceAccount"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -104,7 +102,6 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IFolderService, FolderService>();
 builder.Services.AddScoped<IUserActivityService, UserActivityService>();
-builder.Services.AddScoped<IDataContext, DataContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MappingPostProfile));
 
 //builder.Services.AddDbContext<IDataContext, DataContext>(
