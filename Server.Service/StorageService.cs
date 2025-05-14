@@ -24,7 +24,8 @@ namespace Server.Service
                 throw new InvalidOperationException("GOOGLE_CREDENTIALS_JSON is missing");
 
             // המרת הסטרינג לאובייקט JSON
-            var json = JObject.Parse(credentialsJsonRaw);
+            // שימוש ב-JsonConvert כדי להמיר את המחרוזת לאובייקט JSON
+            var json = JsonConvert.DeserializeObject<JObject>(credentialsJsonRaw);
 
             // יצירת קובץ זמני עם JSON תקין
             var tempPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
@@ -38,7 +39,6 @@ namespace Server.Service
 
             BucketAddCorsConfiguration();
         }
-
 
         public async Task UploadFileAsync(string filePath, string objectName)
         {
