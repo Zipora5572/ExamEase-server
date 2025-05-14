@@ -14,13 +14,15 @@ namespace Server.Service
         public StorageService(IConfiguration configuration)
         {
             _bucketName = configuration["GoogleCloud:BucketName"];
-            var credentialsJsonPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
 
-            if (string.IsNullOrEmpty(credentialsJsonPath))
-                throw new InvalidOperationException("Missing GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable.");
+            var credentialsJson = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
 
-           
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsJsonPath);
+            if (string.IsNullOrEmpty(credentialsJson))
+                throw new InvalidOperationException("Missing GOOGLE_CREDENTIALS_JSON environment variable.");
+
+            var credentialsPath = "/tmp/google-credentials.json";
+            File.WriteAllText(credentialsPath, credentialsJson);
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsPath);
 
             _storageClient = StorageClient.Create();
 
