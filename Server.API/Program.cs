@@ -134,7 +134,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("MyPolicy");
 
-app.UseMiddleware<ActivityLoggingMiddleware>();
+//app.UseMiddleware<ActivityLoggingMiddleware>();
 
 app.UseAuthentication();
 
