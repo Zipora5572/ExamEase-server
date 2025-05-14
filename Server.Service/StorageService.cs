@@ -37,9 +37,9 @@ namespace Server.Service
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", tempPath);
 
             // יצירת לקוח Google Storage
-            var storageClient = StorageClient.Create();
+            _storageClient = StorageClient.Create();
 
-            //BucketAddCorsConfiguration();
+            BucketAddCorsConfiguration();
 
         }
 
