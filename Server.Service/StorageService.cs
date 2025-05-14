@@ -39,7 +39,7 @@ namespace Server.Service
             // יצירת לקוח Google Storage
             var storageClient = StorageClient.Create();
 
-            BucketAddCorsConfiguration();
+            //BucketAddCorsConfiguration();
 
         }
 
