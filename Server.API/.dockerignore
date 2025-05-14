@@ -1,0 +1,28 @@
+# Ignore the bin and obj directories
+bin/
+obj/
+
+# Ignore user-specific files
+.vscode/
+.idea/
+
+# Ignore build output directories
+out/
+
+# Ignore configuration files that are not needed in the container
+appsettings.Development.json
+appsettings.json
+
+# Ignore source control files
+.git/
+.gitignore
+
+# Ignore local files for development
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore logs and temporary files
+*.log
+*.tmp

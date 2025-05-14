@@ -26,6 +26,8 @@ namespace Server.API.Controllers
         private readonly IExamService _examService;
         private readonly IFolderService _folderService;
         private readonly IMapper _mapper;
+        private readonly string _flaskUrl;
+
 
         public StudentExamController(
             IStudentExamService studentExamService,
@@ -33,7 +35,8 @@ namespace Server.API.Controllers
             IMapper mapper,
             IStorageService storageService,
             IExamService examService, 
-            IFolderService folderService)
+            IFolderService folderService,
+            IConfiguration configuration)
         {
             _studentExamService = studentExamService;
             _studentService = studentService;
@@ -41,7 +44,7 @@ namespace Server.API.Controllers
             _storageService = storageService;
             _examService = examService;
             _folderService = folderService;
-
+            _flaskUrl = configuration["FLASK_URL"];
         }
 
         // GET: api/<StudentExamController>
@@ -131,7 +134,7 @@ namespace Server.API.Controllers
                 var namesJson = JsonConvert.SerializeObject(studentNames);
                 form.Add(new StringContent(namesJson, Encoding.UTF8, "text/plain"), "student_names_list");
 
-                var flaskResponse = await httpClient.PostAsync("http://localhost:5000/extract-name", form);
+                var flaskResponse = await httpClient.PostAsync($"{_flaskUrl}/extract-name", form);
                 if (!flaskResponse.IsSuccessStatusCode)
                     return StatusCode((int)flaskResponse.StatusCode, flaskResponse);
 
@@ -258,7 +261,7 @@ namespace Server.API.Controllers
                 form.Add(new StringContent(request.Lang), "lang");
 
 
-                var response = await httpClient.PostAsync("http://localhost:5000/grade", form);
+                var response = await httpClient.PostAsync($"{_flaskUrl}/grade", form);
 
                 if (!response.IsSuccessStatusCode)
                     return StatusCode((int)response.StatusCode, "Failed to process grading in Flask service.");
