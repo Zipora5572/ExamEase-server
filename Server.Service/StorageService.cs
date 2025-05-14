@@ -17,17 +17,26 @@ namespace Server.Service
 
             var credentialsJson = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
 
-            if (string.IsNullOrEmpty(credentialsJson))
+            if (string.IsNullOrWhiteSpace(credentialsJson))
                 throw new InvalidOperationException("Missing GOOGLE_CREDENTIALS_JSON environment variable.");
 
-            var credentialsPath = "/tmp/google-credentials.json";
-            File.WriteAllText(credentialsPath, credentialsJson);
+            // ודא שהנתיב חוקי ב-Windows ולינוקס
+            var credentialsPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
+
+            // כתיבת הקובץ רק אם הוא לא קיים או השתנה
+            if (!File.Exists(credentialsPath) || File.ReadAllText(credentialsPath) != credentialsJson)
+            {
+                File.WriteAllText(credentialsPath, credentialsJson);
+            }
+
+            // חשוב: להגדיר את משתנה הסביבה לפני הקריאה ל-Create()
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsPath);
 
             _storageClient = StorageClient.Create();
 
             BucketAddCorsConfiguration();
         }
+
 
         public async Task UploadFileAsync(string filePath, string objectName)
         {
