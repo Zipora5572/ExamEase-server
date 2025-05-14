@@ -23,21 +23,24 @@ namespace Server.Service
             if (string.IsNullOrWhiteSpace(credentialsJsonRaw))
                 throw new InvalidOperationException("GOOGLE_CREDENTIALS_JSON is missing");
 
-            // המרת הסטרינג לאובייקט JSON
-            // שימוש ב-JsonConvert כדי להמיר את המחרוזת לאובייקט JSON
-            var json = JsonConvert.DeserializeObject<JObject>(credentialsJsonRaw);
+            // שלב 1 – להמיר את המחרוזת החיצונית
+            var unescapedJson = JsonConvert.DeserializeObject<string>(credentialsJsonRaw);
 
-            // יצירת קובץ זמני עם JSON תקין
+            // שלב 2 – עכשיו באמת לפרסר את ה־JSON עצמו
+            var json = JsonConvert.DeserializeObject<JObject>(unescapedJson);
+
+            // כתיבה לקובץ
             var tempPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
             File.WriteAllText(tempPath, json.ToString(Formatting.Indented));
 
-            // הגדרת משתנה הסביבה לקובץ שנשמר
+            // קביעת משתנה סביבה
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", tempPath);
 
-            // כעת אפשר לקרוא ל־StorageClient.Create() בלי שגיאה
+            // יצירת לקוח Google Storage
             var storageClient = StorageClient.Create();
 
             BucketAddCorsConfiguration();
+
         }
 
         public async Task UploadFileAsync(string filePath, string objectName)
