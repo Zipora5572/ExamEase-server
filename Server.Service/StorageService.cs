@@ -4,6 +4,7 @@ using Google.Apis.Storage.v1.Data;
 using Microsoft.Extensions.Configuration;
 using static Google.Apis.Storage.v1.Data.Bucket;
 using Google.Apis.Auth.OAuth2;
+using Newtonsoft.Json.Linq;
 namespace Server.Service
 {
     public class StorageService : IStorageService
@@ -18,20 +19,26 @@ namespace Server.Service
             var credentialsJsonRaw = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
 
             if (string.IsNullOrWhiteSpace(credentialsJsonRaw))
-                throw new InvalidOperationException("Missing GOOGLE_CREDENTIALS_JSON environment variable.");
+                throw new InvalidOperationException("GOOGLE_CREDENTIALS_JSON is missing");
 
-            // תיקן את תווי ה-\n למעברי שורה אמיתיים
-            var credentialsJson = credentialsJsonRaw.Replace("\\n", "\n");
+            // המרת הסטרינג לאובייקט JSON
+            var json = JObject.Parse(credentialsJsonRaw);
 
-            var credentialsPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
-
-            if (!File.Exists(credentialsPath) || File.ReadAllText(credentialsPath) != credentialsJson)
+            // החלפת תווי \n בשדה של המפתח
+            if (json["private_key"] != null)
             {
-                File.WriteAllText(credentialsPath, credentialsJson);
+                json["private_key"] = json["private_key"]!.ToString().Replace("\\n", "\n");
             }
 
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsPath);
-            _storageClient = StorageClient.Create();
+            // יצירת קובץ זמני עם JSON תקין
+            var tempPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
+            File.WriteAllText(tempPath, json.ToString());
+
+            // הגדרת משתנה הסביבה לקובץ שנשמר
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", tempPath);
+
+            // כעת אפשר לקרוא ל־StorageClient.Create() בלי שגיאה
+            var storageClient = StorageClient.Create();
 
             BucketAddCorsConfiguration();
         }
