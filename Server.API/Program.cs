@@ -90,6 +90,9 @@ builder.Services.AddScoped<IStudentExamRepository, StudentExamRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IUserActivityRepository, UserActivityRepository>();
 
+builder.Services.AddDbContextFactory<DataContext>(options =>
+    options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34)))
+);
 
 builder.Services.AddSingleton<IStorageService, StorageService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
