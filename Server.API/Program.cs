@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
+using Server.API.Middleware;
 DotNetEnv.Env.Load();
 Console.WriteLine(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"));
 var builder = WebApplication.CreateBuilder(args);
@@ -138,7 +139,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("MyPolicy");
 
-//app.UseMiddleware<ActivityLoggingMiddleware>();
+app.UseMiddleware<ActivityLoggingMiddleware>();
 
 app.UseAuthentication();
 
