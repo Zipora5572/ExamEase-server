@@ -113,8 +113,8 @@ builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy =>
     policy.WithOrigins(
         "http://localhost:5173",
             "http://localhost:4200",
-            "https://examease-admin.onrender.com/",
-            "https://examease-app.onrender.com/"
+            "https://examease-admin.onrender.com",
+            "https://examease-app.onrender.com"
         )
             .AllowAnyHeader()
           .AllowCredentials()
