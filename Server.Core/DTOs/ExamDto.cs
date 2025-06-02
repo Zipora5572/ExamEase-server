@@ -20,6 +20,17 @@
         public DateTime UpdatedAt { get; set; } 
         public bool IsDeleted { get; set; }
         public bool IsShared { get; set; }
-        public string ExamPath { get; set; } 
+        public string ExamPath { get; set; }
+
+        public int Submissions { get; set; }
+        public double? AverageGrade { get; set; }
+        public StatusEnum Status { get; set; }
+
+        public enum StatusEnum
+        {
+            Pending,
+            InProgress,
+            Completed
+        }
     }
 }

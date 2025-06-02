@@ -37,11 +37,9 @@ namespace Server.Data
         {
             modelBuilder.Entity<Exam>()
                 .HasOne(e => e.User)
-                .WithMany()
+                .WithMany() // אם ל-User יש אוסף Exams, לשים את השם כאן
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-           
 
             modelBuilder.Entity<Exam>()
                 .HasOne(e => e.Folder)
@@ -51,31 +49,30 @@ namespace Server.Data
 
             modelBuilder.Entity<StudentExam>()
                 .HasOne(se => se.Exam)
-                .WithMany()
+                .WithMany(e => e.StudentExams) // חשוב! קישור חזור ל-StudentExams ב-Exam
                 .HasForeignKey(se => se.ExamId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StudentExam>()
                 .HasOne(se => se.Student)
-                .WithMany()
+                .WithMany() // אם ל-Student יש אוסף StudentExams, אפשר להוסיף כאן את השם
                 .HasForeignKey(se => se.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StudentExam>()
                 .HasOne(se => se.Teacher)
-                .WithMany()
+                .WithMany() // אם ל-Teacher (User) יש אוסף של StudentExams, אפשר להוסיף כאן את השם
                 .HasForeignKey(se => se.TeacherId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<StudentExam>()
+                .HasOne(se => se.Folder)
+                .WithMany()
+                .HasForeignKey(se => se.FolderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Folder>()
                 .HasQueryFilter(f => !f.IsDeleted);
-
-            modelBuilder.Entity<StudentExam>()
-    .HasOne(se => se.Folder)
-    .WithMany()
-    .HasForeignKey(se => se.FolderId)
-    .OnDelete(DeleteBehavior.Restrict); // או DeleteBehavior.NoAction
-
         }
 
 

@@ -45,7 +45,7 @@ namespace Server.Core.Entities
 
 
         public string ExamPath { get; set; }
+        public ICollection<StudentExam> StudentExams { get; set; }
 
-       
     }
 }

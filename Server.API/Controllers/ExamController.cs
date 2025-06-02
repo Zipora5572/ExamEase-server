@@ -34,15 +34,30 @@ namespace Server.API.Controllers
 
         // GET: api/<ExamController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> Get()
+        public async Task<ActionResult<IEnumerable<ExamDto>>> Get()
         {
-            List<Exam> exams = await _examService.GetAllExamsAsync();
+            List<ExamDto> exams = await _examService.GetAllExamsAsync();
             if (exams == null)
             {
                 return NotFound();
             }
             return Ok(exams);
         }
+
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<ExamDto>>> GetByUserId(int id)
+        {
+            List<ExamDto> exams = await _examService.GetByUserIdAsync(id);
+            if (exams == null)
+            {
+                return NotFound();
+            }
+            return Ok(exams);
+        }
+
+
+
+
         [HttpGet("signed-url")]
         public IActionResult GetSignedUrl([FromQuery] string objectName)
         {
@@ -54,6 +69,7 @@ namespace Server.API.Controllers
             var url = _examService.GetSignedUrl(objectName, TimeSpan.FromMinutes(15));
             return Ok(url);
         }
+
         // GET api/<ExamController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamDto>> Get(int id)
@@ -104,6 +120,7 @@ namespace Server.API.Controllers
             }
             return Ok(examDto);
         }
+
         // PATCH api/<ExamController>/update-name/5
         [HttpPatch("rename/{id}")]
         public async Task<ActionResult<ExamDto>> UpdateName(int id, [FromBody] string newName)
@@ -126,6 +143,7 @@ namespace Server.API.Controllers
                 return StatusCode(500, $"Error updating exam name: {ex.Message}");
             }
         }
+
         // DELETE api/<ExamController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<int>> Delete(int id)
@@ -175,6 +193,7 @@ namespace Server.API.Controllers
                 return StatusCode(500, $"Error downloading file: {ex.Message}");
             }
         }
+
         [HttpPatch("{id}/toggle-star")]
         public async Task<IActionResult> ToggleStar(int id)
         {

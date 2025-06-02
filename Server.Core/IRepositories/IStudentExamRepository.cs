@@ -10,6 +10,7 @@ namespace Server.Core.IRepositories
     public interface IStudentExamRepository:IRepository<StudentExam>
     {
         Task<List<StudentExam>> GetByExamIdAsync(int examId);
+        Task<List<StudentExam>> GetByUserIdAsync(int userId);
         Task<StudentExam> GetByStudentIdAsync(int studentId);
         Task<bool> ExistsAsync(int studentId, int examId);
         Task AddRangeAsync(IEnumerable<StudentExam> studentsExams);

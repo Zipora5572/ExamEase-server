@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +25,20 @@ namespace Server.Service
             _storageService = storageService;      
         }
 
-        public async Task<List<Exam>> GetAllExamsAsync()
+        public async Task<List<ExamDto>> GetAllExamsAsync()
         {
-
             var exams = await _repositoryManager.Exams.GetAllAsync();
-            return exams.ToList();
+            var examDtos = _mapper.Map<List<ExamDto>>(exams);
+            return examDtos;
         }
+
+        public async Task<List<ExamDto>> GetByUserIdAsync(int userId)
+        {
+            var exams = await _repositoryManager.Exams.GetByUserIdAsync(userId);
+            var examDtos = _mapper.Map<List<ExamDto>>(exams);
+            return examDtos;
+        }
+
 
         public async Task<ExamDto> GetByIdAsync(int id)
         {
@@ -146,17 +155,21 @@ namespace Server.Service
         }
         public string GetSignedUrl(string objectName, TimeSpan duration)
         {
-            var credentialPath = @"C:\Users\user1\Desktop\ציפי לימודים שנה ב\Fullstack Project\Web API .NET\Server.service\exams-management-service.json";
-            var urlSigner = UrlSigner.FromServiceAccountPath(credentialPath);
+            //var credentialsJsonPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+
+            //Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsJsonPath);
+
+            var urlSigner = UrlSigner.FromCredential(GoogleCredential.GetApplicationDefault());
 
             return urlSigner.Sign(
-              "exams-bucket",
+                "exams-bucket",
                 objectName,
                 duration,
                 HttpMethod.Get
             );
         }
-       
+
+
 
         public async Task<ExamDto> ToggleStarAsync(int fileId)
         {

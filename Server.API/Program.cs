@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
 using Server.API.Middleware;
 DotNetEnv.Env.Load();
-Console.WriteLine(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"));
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -49,6 +49,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -90,9 +91,9 @@ builder.Services.AddScoped<IStudentExamRepository, StudentExamRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IUserActivityRepository, UserActivityRepository>();
 
-builder.Services.AddDbContextFactory<DataContext>(options =>
-    options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34)))
-);
+//builder.Services.AddDbContextFactory<DataContext>(options =>
+//    options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34)))
+//);
 
 builder.Services.AddSingleton<IStorageService, StorageService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
@@ -107,10 +108,10 @@ builder.Services.AddScoped<IFolderService, FolderService>();
 builder.Services.AddScoped<IUserActivityService, UserActivityService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MappingPostProfile));
 
-//builder.Services.AddDbContext<IDataContext, DataContext>(
-//    options => options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNECTION")));
 builder.Services.AddDbContext<IDataContext, DataContext>(
-    options => options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34))));
+    options => options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNECTION")));
+//builder.Services.AddDbContext<IDataContext, DataContext>(
+//    options => options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34))));
 
 builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy =>
 {
@@ -142,7 +143,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("MyPolicy");
 
-app.UseMiddleware<ActivityLoggingMiddleware>();
+//app.UseMiddleware<ActivityLoggingMiddleware>();
 
 app.UseAuthentication();
 

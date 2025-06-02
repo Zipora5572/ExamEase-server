@@ -37,7 +37,16 @@ namespace Server.API.Controllers
             }
             return Ok(folders);
         }
-
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<Folder>>> GetByUserId(int id)
+        {
+            List<Folder> folders = await _folderService.GetByUserIdAsync(id);
+            if (folders == null)
+            {
+                return NotFound();
+            }
+            return Ok(folders);
+        }
         // GET api/<FolderController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FolderDto>> Get(int id)

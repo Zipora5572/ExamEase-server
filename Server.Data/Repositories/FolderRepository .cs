@@ -1,4 +1,5 @@
-﻿using Server.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Server.Core.Entities;
 using Server.Core.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,12 @@ namespace Server.Data.Repositories
         {
             _context = context;
         }
+        public async Task<List<Folder>> GetByUserIdAsync(int userId)
+        {
+            return await _context.Folders
+                .Where(e => e.UserId == userId)
+                .ToListAsync();
+        }
 
-      
     }
 }

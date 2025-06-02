@@ -7,6 +7,7 @@ namespace Server.Data
     public interface IDataContext
     {
         public DbSet<Exam> Exams { get; set; }
+        public DbSet<Folder> Folders { get; set; }
         public DbSet<StudentExam> StudentExams { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }

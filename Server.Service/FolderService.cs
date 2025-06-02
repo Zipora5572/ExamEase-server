@@ -34,7 +34,12 @@ namespace Server.Service
             var Folders = await _repositoryManager.Folders.GetAllAsync();
             return Folders.ToList();
         }
+        public async Task<List<Folder>> GetByUserIdAsync(int userId)
+        {
 
+            var folders = await _repositoryManager.Folders.GetByUserIdAsync(userId);
+            return folders.ToList();
+        }
         public async Task<FolderDto> GetByIdAsync(int id)
         {
 

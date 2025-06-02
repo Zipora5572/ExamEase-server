@@ -75,6 +75,13 @@ namespace Server.API.Controllers
             return Ok(studentExams);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<StudentExamDto>>> GetByUserId(int userId)
+        {
+            var studentExams = await _studentExamService.GetStudentExamsByUserIdAsync(userId);
+            return Ok(studentExams);
+        }
+
         [HttpPost("uploadStudentExam")]
         public async Task<ActionResult> UploadStudentExam([FromForm] StudentExamPostModel studentExamPostModel)
         {

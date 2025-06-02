@@ -8,8 +8,9 @@ namespace Server.Core.IServices
 {
     public interface IExamService
     {
-        Task<List<Exam>> GetAllExamsAsync();
+        Task<List<ExamDto>> GetAllExamsAsync();
         Task<ExamDto> GetByIdAsync(int id);
+        Task<List<ExamDto>> GetByUserIdAsync(int userId);
         Task<ExamDto> AddExamAsync(ExamDto exam);
         Task DeleteExamAsync(ExamDto exam);
         Task<ExamDto> UpdateExamAsync(int id, ExamDto exam, string oldName = "");

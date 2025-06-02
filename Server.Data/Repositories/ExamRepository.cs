@@ -1,4 +1,5 @@
-﻿using Server.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Server.Core.Entities;
 using Server.Core.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,20 @@ namespace Server.Data.Repositories
 
 
         public IQueryable<Exam> GetAllExams() => _context.Exams;
+        public async Task<Exam> GetByIdAsync(int id)
+        {
+            return await _context.Exams
+                .Include(e => e.StudentExams)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<List<Exam>> GetByUserIdAsync(int userId)
+        {
+            return await _context.Exams
+                .Where(e => e.UserId == userId)
+                .Include(e => e.StudentExams)
+                .ToListAsync();
+        }
+
     }
 }

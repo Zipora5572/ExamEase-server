@@ -13,12 +13,12 @@ namespace Server.API.Middleware
     public class ActivityLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IDbContextFactory<DataContext> _contextFactory;
+        //private readonly IDbContextFactory<DataContext> _contextFactory;
 
         public ActivityLoggingMiddleware(RequestDelegate next, IDbContextFactory<DataContext> contextFactory)
         {
             _next = next;
-            _contextFactory = contextFactory;
+            //_contextFactory = contextFactory;
         }
 
         public async Task Invoke(HttpContext context)
@@ -40,9 +40,9 @@ namespace Server.API.Middleware
 
             try
             {
-                using var db = _contextFactory.CreateDbContext();
-                db.UserActivities.Add(activity);
-                await db.SaveChangesAsync();
+                //using var db = _contextFactory.CreateDbContext();
+                //db.UserActivities.Add(activity);
+                //await db.SaveChangesAsync();
             }
             catch (Exception ex)
             {

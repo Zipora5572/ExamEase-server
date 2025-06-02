@@ -35,6 +35,14 @@ namespace Server.Data.Repositories
                 .Include(se => se.Student)
                 .ToListAsync();
         }
+        public async Task<List<StudentExam>> GetByUserIdAsync(int userId)
+        {
+
+            return await _context.StudentExams
+                .Where(se => se.TeacherId == userId)
+                .Include(se => se.Student)
+                .ToListAsync();
+        }
 
         public async Task<StudentExam> GetByStudentIdAsync(int studentId)
         {

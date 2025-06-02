@@ -9,6 +9,7 @@ namespace Server.Core.IRepositories
 {
     public interface IFolderRepository:IRepository<Folder>
     {
+        Task<List<Folder>> GetByUserIdAsync(int userId);
 
     }
 }

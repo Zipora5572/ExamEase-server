@@ -49,6 +49,12 @@ namespace Server.Service
             return studentExams.Select(exam => _mapper.Map<StudentExamDto>(exam)).ToList();
         }
 
+        public async Task<List<StudentExamDto>> GetStudentExamsByUserIdAsync(int userId)
+        {
+            var studentExams = await _repositoryManager.StudentExams.GetByExamIdAsync(userId);
+            return studentExams.Select(exam => _mapper.Map<StudentExamDto>(exam)).ToList();
+        }
+
         public async Task<StudentExamDto> AddStudentExamAsync(StudentExamDto studentExamDto)
         {
             

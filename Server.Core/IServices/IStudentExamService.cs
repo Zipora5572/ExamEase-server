@@ -14,5 +14,7 @@ namespace Server.Core.IServices
         Task<List<StudentExamDto>> GetStudentExamsByExamIdAsync(int examId);
         Task ReplaceCorrectedImageAsync(int studentExamId, Stream correctedImageStream);
         Task<StudentExamDto> GetByStudentIdAsync(int studentId);
+        Task<List<StudentExamDto>> GetStudentExamsByUserIdAsync(int userId);
+
     }
 }
