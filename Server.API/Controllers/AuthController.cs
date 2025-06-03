@@ -41,8 +41,8 @@ namespace Server.API.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = false,
-                    SameSite = SameSiteMode.Lax,
+                    Secure = true, // חובה בפרודקשן כדי שהדפדפן ישלח את ה-cookie בבקשת cross-site
+                    SameSite = SameSiteMode.None, // חובה כדי שיישלח בין דומיינים
                     Expires = DateTime.Now.AddDays(7),
                     Path = "/"
                 };
