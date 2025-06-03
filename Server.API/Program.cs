@@ -108,10 +108,10 @@ builder.Services.AddScoped<IFolderService, FolderService>();
 builder.Services.AddScoped<IUserActivityService, UserActivityService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MappingPostProfile));
 
-//builder.Services.AddDbContext<IDataContext, DataContext>(
-//    options => options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNECTION")));
 builder.Services.AddDbContext<IDataContext, DataContext>(
-    options => options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34))));
+    options => options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNECTION")));
+//builder.Services.AddDbContext<IDataContext, DataContext>(
+//    options => options.UseMySql(Environment.GetEnvironmentVariable("MYSQL_CONNECTION"), new MySqlServerVersion(new Version(8, 0, 34))));
 
 builder.Services.AddCors(opt => opt.AddPolicy("MyPolicy", policy =>
 {

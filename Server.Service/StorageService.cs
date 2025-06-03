@@ -17,31 +17,31 @@ namespace Server.Service
         public StorageService(IConfiguration configuration)
         {
               _bucketName = configuration["GoogleCloud:BucketName"];
-            //  var credentialsJsonPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+            var credentialsJsonPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
 
-            //  if (string.IsNullOrEmpty(credentialsJsonPath))
-            //      throw new InvalidOperationException("Missing GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable.");
+            if (string.IsNullOrEmpty(credentialsJsonPath))
+                throw new InvalidOperationException("Missing GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable.");
 
 
-            //Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsJsonPath);
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsJsonPath);
 
-            var credentialsJsonRaw = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
+            //var credentialsJsonRaw = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
 
-            if (string.IsNullOrWhiteSpace(credentialsJsonRaw))
-                throw new InvalidOperationException("GOOGLE_CREDENTIALS_JSON is missing");
+            //if (string.IsNullOrWhiteSpace(credentialsJsonRaw))
+            //    throw new InvalidOperationException("GOOGLE_CREDENTIALS_JSON is missing");
 
-            // שלב 1 – להמיר את המחרוזת החיצונית
-            var unescapedJson = JsonConvert.DeserializeObject<string>(credentialsJsonRaw);
+            //// שלב 1 – להמיר את המחרוזת החיצונית
+            //var unescapedJson = JsonConvert.DeserializeObject<string>(credentialsJsonRaw);
 
-            // שלב 2 – עכשיו באמת לפרסר את ה־JSON עצמו
-            var json = JsonConvert.DeserializeObject<JObject>(unescapedJson);
+            //// שלב 2 – עכשיו באמת לפרסר את ה־JSON עצמו
+            //var json = JsonConvert.DeserializeObject<JObject>(unescapedJson);
 
-            // כתיבה לקובץ
-            var tempPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
-            File.WriteAllText(tempPath, json.ToString(Formatting.Indented));
+            //// כתיבה לקובץ
+            //var tempPath = Path.Combine(Path.GetTempPath(), "google-credentials.json");
+            //File.WriteAllText(tempPath, json.ToString(Formatting.Indented));
 
-            // קביעת משתנה סביבה
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", tempPath);
+            //// קביעת משתנה סביבה
+            //Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", tempPath);
 
             // יצירת לקוח Google Storage
             _storageClient = StorageClient.Create();

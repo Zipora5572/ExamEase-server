@@ -82,14 +82,23 @@ namespace Server.API.Controllers
 
             return Ok(new { User = newUser });
         }
-      
+
         [HttpPost("logout")]
         public IActionResult Logout()
         {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"
+            };
 
-            Response.Cookies.Delete("jwt"); 
+            Response.Cookies.Delete("jwt", cookieOptions);
+
             return Ok();
         }
+
 
         [HttpGet("checkAuth")]
         public async Task<IActionResult> CheckAuth()
