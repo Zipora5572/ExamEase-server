@@ -16,7 +16,7 @@ namespace Server.Service
 
         public StorageService(IConfiguration configuration)
         {
-            //  _bucketName = configuration["GoogleCloud:BucketName"];
+              _bucketName = configuration["GoogleCloud:BucketName"];
             //  var credentialsJsonPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
 
             //  if (string.IsNullOrEmpty(credentialsJsonPath))
